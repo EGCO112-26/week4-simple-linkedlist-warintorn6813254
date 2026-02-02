@@ -1,63 +1,51 @@
-//
-//  main.c
-//  simple linkedlist
-//
-//  Created by Mingmanas Sivaraksa on 4/2/2566 BE.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
-#include "node.h"
+#include <string.h>
+#include "std_node.h"
 
-int main(int argc, const char * argv[]) {
-    int c=5;
-    struct node a,b,*head ;
-    a.value = c;
-    a.next=&b;
-    head=&a;
-    b.value=head->value+3;
+int main(int argc, char *argv[]) {
 
-    printf("%d\n", head ->value ); //what value for 5
-    printf("%d\n", head ->next->value ); //what value for 8
-/*  Exercise I
-    1. Add 1 more than at the end
-    2. Add value(11)
-    3. Make next become NULL
- */
-    
-/*  Exercise II
-        1. Add 1 more than at the begining!!!!
-        2. Add value (2)
-        
-*/
-    typedef struct node* NodePtr;
-    NodePtr tmp=head; //add temp value to faciliate
-        
-    /*  Exercise III Use loop to print everything
-        int i,n=5;
-        for(i=0;i<n;i++){
-            printf("%3d", tmp->value);
-          // What is missing???
+    typedef struct node Node;
+    typedef Node* NodePtr;
+
+    NodePtr head = NULL;
+    NodePtr temp = NULL;
+
+    int i;
+
+    /* Insert each node using input argument */
+    for (i = 1; i < argc; i += 2) {
+
+        NodePtr newNode = (NodePtr) malloc(sizeof(Node));
+
+        strcpy(newNode->id, argv[i]);
+        strcpy(newNode->name, argv[i + 1]);
+        newNode->next = NULL;
+
+        if (head == NULL) {
+            head = newNode;
+            temp = head;
+        } else {
+            temp->next = newNode;
+            temp = temp->next;
         }
-    */
-    
-   /*  Exercise IV change to while loop!! (you can use NULL to help)
-       
-         while(){
-            printf("%3d", tmp->value);
-           // What is missing???
-        }
-    */
-    
- /*  Exercise V Use malloc to create all nodes, instead of create a struct!!
-         //use a loop to help
-          
-     */
+    }
 
-    /*  Exercise VI Free all node !!
-         //use a loop to help
-          
-     */
-    
+    /* Print all data in linked list */
+    printf("print linked list\n");
+    temp = head;
+    while (temp) {
+        printf("%s %s\n", temp->id, temp->name);
+        temp = temp->next;
+    }
+
+    /* Delete all linked list */
+    temp = head;
+    while (temp) {
+        head = head->next;
+        free(temp);
+        temp = head;
+    }
+
     return 0;
 }
